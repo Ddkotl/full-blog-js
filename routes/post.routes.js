@@ -8,4 +8,6 @@ postRouter.get('/post/:id', postController.show)
 postRouter.put('/post', postController.update)
 postRouter.delete('/post/:id', postController.delete)
 
+postRouter.get('/post', postController.getPostsByUser)
+
 export default postRouter

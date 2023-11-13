@@ -8,3 +8,11 @@ export const db = new Pool({
 	port: 5432,
 	database: 'full-blog-js',
 })
+
+db.query('SELECT NOW()', (err, result) => {
+	if (err) {
+		console.error('DB error:', err)
+	} else {
+		console.log('DB ok:', result.rows[0])
+	}
+})

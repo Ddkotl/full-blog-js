@@ -1,10 +1,16 @@
+import { validationResult } from 'express-validator'
 import { db } from '../database/db.js'
 class UserController {
 	async create(req, res) {
-		const { name, email } = req.body
+		const errors = validationResult(req)
+		if (!errors.isEmpty()) {
+			return res.status(400).json(errors.array())
+		}
+		const { name, email, password, avatarUrl } = req.body
+		const passwordHash = password
 		const newUser = await db.query(
-			`INSERT INTO users (name,email) values ($1,$2) RETURNING *`,
-			[name, email]
+			`INSERT INTO users (name,email,passwordHash,avatarUrl) values ($1,$2,$3,$4) RETURNING *`,
+			[name, email, passwordHash, avatarUrl]
 		)
 		res.json(newUser.rows)
 	}

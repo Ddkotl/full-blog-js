@@ -30,6 +30,12 @@ class PostController {
 		const post = await db.query(`DELETE FROM posts where id = $1`, [id])
 		res.json('ok')
 	}
+
+	async getPostsByUser(req, res) {
+		const id = req.query.id
+		const post = await db.query(`SELECT * FROM posts where user_id = $1`, [id])
+		res.json(post.rows)
+	}
 }
 
 export default new PostController()
