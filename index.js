@@ -1,14 +1,15 @@
 import express from 'express'
-import { pool } from './database/db.js'
+import postRouter from './routes/post.routes.js'
+import userRouter from './routes/user.routes.js'
 
 const PORT = process.env.PORT || 4444
-console.log(pool)
 const app = express()
+
 app.use(express.json())
 
-app.get('/', (req, res) => {
-	res.send('Hello')
-})
+app.use('/api', userRouter)
+app.use('/api', postRouter)
+
 // app.post('/auth/login', (req, res) => {
 // 	console.log(req.body)
 // 	const token = jwt.sign(
