@@ -1,4 +1,4 @@
-import { db } from '../database/db.js'
+import { db } from '../../database/db.js'
 class PostController {
 	async create(req, res) {
 		const { title, content, user_id } = req.body

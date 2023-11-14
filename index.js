@@ -1,4 +1,5 @@
 import express from 'express'
+import authRouter from './routes/auth.routes.js'
 import postRouter from './routes/post.routes.js'
 import userRouter from './routes/user.routes.js'
 
@@ -9,6 +10,7 @@ app.use(express.json())
 
 app.use('/api', userRouter)
 app.use('/api', postRouter)
+app.use('/api', authRouter)
 
 // app.post('/auth/login', (req, res) => {
 // 	console.log(req.body)

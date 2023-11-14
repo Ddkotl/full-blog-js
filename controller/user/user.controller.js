@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import { validationResult } from 'express-validator'
-import { db } from '../database/db.js'
+import { db } from '../../database/db.js'
 class UserController {
 	async create(req, res) {
 		try {
