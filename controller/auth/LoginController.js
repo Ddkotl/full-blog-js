@@ -4,6 +4,10 @@ import { db } from '../../database/db.js'
 class LoginController {
 	async login(req, res) {
 		try {
+			const errors = validationResult(req)
+			if (!errors.isEmpty()) {
+				return res.status(400).json(errors.array())
+			}
 			const email = req.body.email
 			const password = req.body.password
 			const user = await db.query(`SELECT * FROM users where email = $1`, [

@@ -1,6 +1,6 @@
 import { body } from 'express-validator'
 
-export const registerValidator = [
+export const RegisterRequest = [
 	body('email', 'Неверный формат почты').isEmail(),
 	body('password', 'Пароль должен быть больше 5 символов').isLength({ min: 5 }),
 	body('name', 'Имя должно быть больше трех символов').isLength({ min: 3 }),

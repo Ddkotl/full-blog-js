@@ -9,11 +9,41 @@
    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );
 
+
+    
+  CREATE TABLE IF NOT EXISTS categories(
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) UNIQUE NOT NULL,
+    content VARCHAR(255),
+    imageUrl VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
   CREATE TABLE IF NOT EXISTS posts (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     content VARCHAR(255) UNIQUE NOT NULL,
     user_id INTEGER NOT NULL,
+    category_id INTEGER,
     imageUrl VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (category_id) REFERENCES categories (id)
+    );
+
+  CREATE TABLE IF NOT EXISTS tags(
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+      CREATE TABLE IF NOT EXISTS post_tags (
+    post_id INTEGER NOT NULL,
+    tag_id INTEGER NOT NULL,
+    PRIMARY KEY (post_id, tag_id),
+    FOREIGN KEY (post_id) REFERENCES posts (id),
+    FOREIGN KEY (tag_id) REFERENCES tags (id)
+);
