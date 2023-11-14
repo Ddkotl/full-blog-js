@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import { validationResult } from 'express-validator'
 import { db } from '../../database/db.js'
-class UserController {
+class CreateConteroller {
 	async create(req, res) {
 		try {
 			const errors = validationResult(req)
@@ -15,7 +15,9 @@ class UserController {
 				`INSERT INTO users (name,email,passwordHash,avatarUrl) values ($1,$2,$3,$4) RETURNING *`,
 				[name, email, passwordHash, avatarUrl]
 			)
-			res.json(newUser.rows)
+			const userData = newUser.rows[0]
+			delete userData.passwordhash
+			res.json(userData)
 		} catch (err) {
 			console.log(err)
 			res.status(500).json({
@@ -23,28 +25,6 @@ class UserController {
 			})
 		}
 	}
-	async index(req, res) {
-		const users = await db.query(`SELECT * FROM users`)
-		res.json(users.rows)
-	}
-	async show(req, res) {
-		const id = req.params.id
-		const user = await db.query(`SELECT * FROM users where id = $1`, [id])
-		res.json(user.rows)
-	}
-	async update(req, res) {
-		const { id, name, email } = req.body
-		const user = await db.query(
-			`UPDATE users set name=$1, email=$2 where id=$3 RETURNING *`,
-			[name, email, id]
-		)
-		res.json(user.rows)
-	}
-	async delete(req, res) {
-		const id = req.params.id
-		const user = await db.query(`DELETE FROM users where id = $1`, [id])
-		res.json('ok')
-	}
 }
 
-export default new UserController()
+export default new CreateConteroller()
