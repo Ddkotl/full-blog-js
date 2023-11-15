@@ -7,17 +7,17 @@ class CreateController {
 			if (!errors.isEmpty()) {
 				return res.status(400).json(errors.array())
 			}
-			const { title, content, user_id, category_id, imageUrl } = req.body
-			const newPost = await db.query(
-				`INSERT INTO posts (title,content,user_id,category_id, imageUrl) values ($1,$2,$3,$4,$5) RETURNING *`,
-				[title, content, user_id, category_id, imageUrl]
+			const { title } = req.body
+			const newTag = await db.query(
+				`INSERT INTO tags (title) values ($1) RETURNING *`,
+				[title]
 			)
-			const postData = newPost.rows[0]
-			res.json(postData)
+			const tagData = newTag.rows[0]
+			res.json(tagData)
 		} catch (err) {
 			console.log(err)
 			res.status(500).json({
-				message: 'Не удалось создать пост',
+				message: 'Не удалось создать тэг',
 			})
 		}
 	}

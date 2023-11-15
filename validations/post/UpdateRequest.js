@@ -6,5 +6,5 @@ export const UpdateRequest = [
 	body('user_id', 'Id долженбыть числом').isInt(),
 	body('category_id', 'Id долженбыть числом').optional().isInt(),
 	body('tags', 'Неверный формат тэгов').optional().isString(),
-	body('imageUrl', 'Неверная ссылка на изображение').optional().isURL(),
+	body('imageUrl', 'Неверная ссылка на изображение').optional().isString(),
 ]
