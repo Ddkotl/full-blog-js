@@ -3,10 +3,14 @@ class ShowController {
 	async show(req, res) {
 		try {
 			const id = req.params.id
-			const user = await db.query(`SELECT * FROM users where id = $1`, [id])
-			const userData = user.rows[0]
-			delete userData.passwordhash
-			res.json(userData)
+			const post = await db.query(`SELECT * FROM posts where id = $1`, [id])
+			const postTags = await db.query(
+				`SELECT * FROM post_tags where post_id = $1`,
+				[id]
+			)
+			const data = post.rows[0]
+			const tags = [postTags.rows[0].tag_id]
+			res.json({ ...data, tags })
 		} catch (err) {
 			console.log(err)
 			res.status(500).json({

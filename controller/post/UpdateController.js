@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt'
 import { validationResult } from 'express-validator'
 import { db } from '../../database/db.js'
 class UpdateController {
@@ -8,16 +7,27 @@ class UpdateController {
 			if (!errors.isEmpty()) {
 				return res.status(400).json(errors.array())
 			}
-			const { id, name, email, password, avatarUrl } = req.body
-			const salt = await bcrypt.genSalt(10)
-			const passwordHash = await bcrypt.hash(password, salt)
-			const user = await db.query(
-				`UPDATE users set name=$1, email=$2, passwordhash=$3, avatarurl=$4  where id=$5 RETURNING *`,
-				[name, email, passwordHash, avatarUrl, id]
+			const { title, content, tags, category_id, imageUrl, id } = req.body
+			const post = await db.query(
+				`UPDATE posts set title=$1, content=$2, category_id=$3, imageUrl=$4 ,updated_at=NOW() where  id=$5 RETURNING *`,
+				[title, content, category_id, imageUrl, id]
 			)
-			const userData = user.rows[0]
-			delete userData.passwordhash
-			res.json(userData)
+			const postTags = []
+			const tagsArray = JSON.parse(tags)
+			if (Array.isArray(tagsArray)) {
+				db.query(`DELETE FROM post_tags where post_id = $1`, [post.rows[0].id])
+				await Promise.all(
+					tagsArray.map(async el => {
+						const result = await db.query(
+							`INSERT INTO post_tags (post_id, tag_id) VALUES ($1, $2) RETURNING *`,
+							[post.rows[0].id, el]
+						)
+						postTags.push(result.rows[0].tag_id)
+					})
+				)
+			}
+			const data = post.rows[0]
+			res.json({ ...data, postTags })
 		} catch (err) {
 			console.log(err)
 			res.status(500).json({

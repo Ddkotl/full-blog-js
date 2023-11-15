@@ -3,7 +3,7 @@ class DeleteController {
 	async delete(req, res) {
 		try {
 			const id = req.params.id
-			const user = await db.query(`DELETE FROM users where id = $1`, [id])
+			await db.query(`DELETE FROM posts where id = $1`, [id])
 			res.json({ message: 'Удаление успешно' })
 		} catch (err) {
 			console.log(err)

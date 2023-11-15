@@ -16,21 +16,6 @@ app.use('/api', categoryRouter)
 app.use('/api', tagRouter)
 app.use('/api', authRouter)
 
-// app.post('/auth/login', (req, res) => {
-// 	console.log(req.body)
-// 	const token = jwt.sign(
-// 		{
-// 			email: req.body.email,
-// 			name: req.body.name,
-// 		},
-// 		'jkkj875'
-// 	)
-// 	res.json({
-// 		sucsess: true,
-// 		token,
-// 	})
-// })
-
 app.listen(PORT, err => {
 	if (err) {
 		return console.log(err)
