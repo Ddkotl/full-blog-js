@@ -6,15 +6,28 @@ import ShowController from '../controller/post/ShowController.js'
 import UpdateController from '../controller/post/UpdateController.js'
 import postController from '../controller/post/post.controller.js'
 import checkAuth from '../utils/checkAuth.js'
+import handleValidationErrors from '../utils/handleValidationErrors.js'
 import { CreateRequest } from '../validations/post/CreateRequest.js'
 import { UpdateRequest } from '../validations/post/UpdateRequest.js'
 const postRouter = new Router()
 
-postRouter.post('/post', checkAuth, CreateRequest, CreateController.create)
+postRouter.post(
+	'/post',
+	CreateRequest,
+	handleValidationErrors,
+	checkAuth,
+	CreateController.create
+)
 postRouter.get('/posts', IndexController.index)
 postRouter.get('/post/:id', ShowController.show)
-postRouter.put('/post', checkAuth, UpdateRequest, UpdateController.update)
-postRouter.delete('/post/:id', DeleteController.delete)
+postRouter.put(
+	'/post',
+	UpdateRequest,
+	handleValidationErrors,
+	checkAuth,
+	UpdateController.update
+)
+postRouter.delete('/post/:id', checkAuth, DeleteController.delete)
 
 postRouter.get('/post', postController.getPostsByUser)
 

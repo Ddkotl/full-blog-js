@@ -1,12 +1,7 @@
-import { validationResult } from 'express-validator'
 import { db } from '../../database/db.js'
 class UpdateController {
 	async update(req, res) {
 		try {
-			const errors = validationResult(req)
-			if (!errors.isEmpty()) {
-				return res.status(400).json(errors.array())
-			}
 			const { title, content, tags, category_id, imageUrl, id } = req.body
 			const post = await db.query(
 				`UPDATE posts set title=$1, content=$2, category_id=$3, imageUrl=$4 ,updated_at=NOW() where  id=$5 RETURNING *`,

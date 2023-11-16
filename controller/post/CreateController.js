@@ -1,12 +1,7 @@
-import { validationResult } from 'express-validator'
 import { db } from '../../database/db.js'
 class CreateController {
 	async create(req, res) {
 		try {
-			const errors = validationResult(req)
-			if (!errors.isEmpty()) {
-				return res.status(400).json(errors.array())
-			}
 			const { title, content, tags, category_id, imageUrl } = req.body
 			const user_id = req.userId
 			const newPost = await db.query(
