@@ -1,3 +1,4 @@
+import cors from 'cors'
 import express from 'express'
 import multer from 'multer'
 import authRouter from './routes/auth.routes.js'
@@ -32,6 +33,7 @@ app.post(
 )
 
 app.use(express.json())
+app.use(cors())
 app.use('/uploads', express.static('uploads'))
 
 app.use('/api', userRouter)
